@@ -15,10 +15,11 @@ namespace Starbucks.Tests
         [Fact]
         public void Can_by_coffee_from_starbucks()
         {
-            PrepareQueues.Prepare("msmq://localhost/starbucks.barista.balancer", QueueType.LoadBalancer);
-            PrepareQueues.Prepare("msmq://localhost/starbucks.barista", QueueType.Standard);
-            PrepareQueues.Prepare("msmq://localhost/starbucks.cashier", QueueType.Standard);
-            PrepareQueues.Prepare("msmq://localhost/starbucks.customer", QueueType.Standard);
+            var queues = new MsmqPlatform();
+            queues.Prepare("starbucks.barista.balancer", QueueType.LoadBalancer);
+            queues.Prepare("starbucks.barista", QueueType.Standard);
+            queues.Prepare("starbucks.cashier", QueueType.Standard);
+            queues.Prepare("starbucks.customer", QueueType.Standard);
 
             var baristaLoadBalancer = new RemoteAppDomainLoadBalancerHost(typeof (RemoteAppDomainHost).Assembly, "LoadBalancer.config");
             baristaLoadBalancer.Start();
